@@ -3,13 +3,19 @@ import React from 'react';
 class FetchSingle extends React.Component {
 
     componentDidMount(){
-        this.props.fetchSingle();
+        if(!this.props.isRandom){
+            this.props.fetchSingle();
+            console.log("not random");
+        } else {
+            this.props.fetchRandom();
+            console.log("random");
+        }
         console.log("single props: ", this.props)
     }
 
     render(){
         console.log("single name: ", this.props.name);
-        console.log(this.props.items)
+        console.log("single items ", this.props.items)
         if(this.props.error) {
             return <li>Error: { this.props.error.message }</li>;
         } else if (!this.props.isLoaded) {

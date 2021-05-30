@@ -1,4 +1,5 @@
 import React from 'react';
+import Navigation from './Navigation.js';
 import FetchList from './FetchList.js';
 import FetchSingle from './FetchSingle.js';
 
@@ -6,19 +7,22 @@ class Fetcher extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            fetchView: "list",
+            isListView: true,
             id: null,
-            random: false,
-            listItems: []
-
+            isRandom: false,
+            listItems: [],
+            page: 1,
+            isPaginated: true,
+            isLoaded: false,
+            fetchUrl: "https://api.punkapi.com/v2/beers"
         }
     }
     
-    url = "https://api.punkapi.com/v2/beers";
     
-    beerFetch = (url) => {
-        console.log("beer fetching: ", url);
-        fetch(url)
+
+    beerFetch = () => {
+        console.log("beer fetching: ", this.state.fetchUrl);
+        fetch(this.state.fetchUrl)
         .then(response => response.json())
         .then(
             (data) => {
@@ -37,32 +41,63 @@ class Fetcher extends React.Component {
         )
     }
 
-    fetchSingle = (id) => {
-        console.log("id = ", id)
-        this.setState({fetchView:"single"});
-        this.setState({id: id})
-    }
-    render(){
-        const { fetchView } = this.state;
-        if(fetchView === "list"){
-            return (
-                <FetchList 
-                    fetchSingle={this.fetchSingle}
-                    fetchList={() => this.beerFetch(this.url)}
-                    listItems={this.state.listItems}
-                    isLoaded={this.state.isLoaded}
-                />
-            )
-        } else if(fetchView === "single") {
-            return (
-                <FetchSingle 
-                    id={this.state.id}
-                    fetchSingle={() => this.beerFetch(this.url+"?ids="+this.state.id)}
-                    listItems={this.state.listItems}
-                    isLoaded={this.state.isLoaded}
-                />
-            )
+    generateFetch = (isSingle, id) => {
+        const baseUrl = "https://api.punkapi.com/v2/beers";
+        if(!isSingle){
+            this.setState({
+                fetchUrl: (baseUrl+"?page="+this.state.page),
+                isListView: true,
+                isPaginated: true,
+                listItems: []
+            });
+        } else {
+            if(id) {
+                this.setState({
+                    fetchUrl: (baseUrl+"?ids="+id),
+                    isListView: false,
+                    isPaginated: false,
+                    id: id,
+                    listItems: []
+                });
+            } else {
+                this.setState({fetchUrl: (baseUrl+"/random"),
+                isListView: false,
+                isPaginated: false,
+                listItems: []
+            });
+            }
         }
+    }
+
+    render(){        
+        const { isListView } = this.state;
+        return (
+            <div className="wrapper">
+            { isListView ?
+                (
+                    <FetchList 
+                    recordRowId={this.generateFetch}
+                    listFetcher={() => this.beerFetch()}
+                    listItems={this.state.listItems}
+                    isLoaded={this.state.isLoaded}
+                    />
+                ) : (
+                    <FetchSingle 
+                    id={this.state.id}
+                    listItems={this.state.listItems}
+                    isLoaded={this.state.isLoaded}
+                    isRandom={this.state.isRandom}
+                    fetchSingle={() => this.beerFetch()}
+                    />
+                )
+            }
+            <Navigation
+            isListView={this.state.isListView}
+            isPaginated={this.state.isPaginated}
+            fetchRandom={this.generateFetch}
+            />
+            </div>
+        )
     }
 }
 export default Fetcher;

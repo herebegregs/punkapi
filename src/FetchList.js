@@ -1,9 +1,10 @@
 import React from 'react';
 
 class FetchList extends React.Component {
+
     componentDidMount(){
-        this.props.fetchList();
-        console.log(this.props)
+        this.props.listFetcher();
+        console.log("listFetcher", this.props);
     }
     render(){
         console.log("items: ", this.props.listItems)
@@ -15,7 +16,7 @@ class FetchList extends React.Component {
             return ( 
                 <ul>
                 {this.props.listItems.map((item) =>(
-                    <li key={item.id} onClick={() => this.props.fetchSingle(item.id)}>
+                    <li key={item.id} onClick={() => this.props.recordRowId(true, item.id)}>
                         ID: {item.id} {item.name} {item.tagline} - 
                     </li>
                     ))}

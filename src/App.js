@@ -1,12 +1,12 @@
 import './App.scss';
 import Header from './Header.js';
-import Wrapper from './Wrapper.js';
+import Fetcher from './Fetcher.js';
 
 function App() {
   return (
     <div className="App">
       <Header />
-      <Wrapper />
+      <Fetcher />
     </div>
   );
 }

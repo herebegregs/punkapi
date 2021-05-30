@@ -1,23 +1,20 @@
 import React from 'react';
 
 class Navigation extends React.Component{
-    constructor(props) {
-        super(props);
-        this.state = {
-          pagination: false,
-        };
-    }
     render () {
-        const { pagination } = this.state;
         return (
             <div className="nav">
-                <button>
-                    List All
-                </button>
-                <button>
-                    Random
-                </button>
-                {pagination &&
+                { this.props.isListView ? 
+                    (<button onClick={() => this.props.fetchRandom(true , null)}>
+                        Random
+                    </button>
+                    ) : ( 
+                    <button onClick={() => this.props.fetchRandom(false , null)}>
+                        List All
+                    </button>
+                    )
+                }
+                {this.props.isPaginated &&
                     <div className="pagination-cluster">
                         <button>
                             Prev
