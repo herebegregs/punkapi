@@ -1,48 +1,23 @@
 import React from 'react';
 
 class FetchSingle extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-          error: null,
-          isLoaded: false,
-          items: [],
-          beer_id: null
-        };
-    }
-    
+
     componentDidMount(){
-        fetch('https://api.punkapi.com/v2/beers/random')
-        .then(response => response.json())
-        .then(
-            (data) => {
-                //console.log(data);
-                this.setState({
-                    isLoaded: true,
-                    items: data
-                });
-            },
-            (error) => {
-                this.setState({
-                    isLoaded: true,
-                    error
-                });
-            }
-        )
+        this.props.fetchSingle();
+        console.log("single props: ", this.props)
     }
 
     render(){
         console.log("single name: ", this.props.name);
-        console.log(this.state.items)
-        const { error, isLoaded, items } = this.state;
-        if(error) {
-            return <li>Error: { error.message }</li>;
-        } else if (!isLoaded) {
+        console.log(this.props.items)
+        if(this.props.error) {
+            return <li>Error: { this.props.error.message }</li>;
+        } else if (!this.props.isLoaded) {
             return <li>Loading</li>;
         } else {
             return ( 
                 <div>
-                    {items.map((item) =>(
+                    {this.props.listItems.map((item) =>(
                         <div key={item.id} className="beer">
                             <p >
                                 {item.name}

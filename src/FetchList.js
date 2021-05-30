@@ -1,45 +1,20 @@
 import React from 'react';
 
 class FetchList extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-          error: null,
-          isLoaded: false,
-          items: []
-        };
-    }
-    
     componentDidMount(){
-        fetch('https://api.punkapi.com/v2/beers')
-        .then(response => response.json())
-        .then(
-            (data) => {
-                //console.log(data);
-                this.setState({
-                    isLoaded: true,
-                    items: data
-                });
-            },
-            (error) => {
-                this.setState({
-                    isLoaded: true,
-                    error
-                });
-            }
-        )
+        this.props.fetchList();
+        console.log(this.props)
     }
     render(){
-        console.log("items: ", this.state.items)
-        const { error, isLoaded, items } = this.state;
-        if(error) {
-            return <li>Error: { error.message }</li>;
-        } else if (!isLoaded) {
+        console.log("items: ", this.props.listItems)
+        if(this.props.error) {
+            return <li>Error: { this.props.error.message }</li>;
+        } else if (!this.props.isLoaded) {
             return <li>Loading</li>;
         } else {
             return ( 
                 <ul>
-                {items.map((item) =>(
+                {this.props.listItems.map((item) =>(
                     <li key={item.id} onClick={() => this.props.fetchSingle(item.id)}>
                         ID: {item.id} {item.name} {item.tagline} - 
                     </li>
