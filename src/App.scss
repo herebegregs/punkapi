@@ -78,7 +78,6 @@
         }
       }
     }
-
     .single-beer {
       display: grid;
       grid-template-columns: 2fr 1fr;
@@ -88,51 +87,53 @@
         "nametag image"
         "desc image"
         "food ingredients";
+        .text {
+          display: flex;
+           flex-direction: column;
+           justify-content: center;
+           flex-wrap: wrap;
+           h5 {
+             margin-bottom: 7px;
+           }
+        }
+        .nametag {
+           grid-area: nametag; 
+           display: flex;
+           flex-direction: column;
+           justify-content: center;
+           flex-wrap: wrap;
+        }
+        .image { 
+          grid-area: image; 
+          img {
+            max-height: 400px;
+          }
+        }
+        .desc {
+           grid-area: desc; 
+           p {
+             margin-bottom: 15px;
+             &.notes {
+              font-style: italic;
+             }
+           }
+        }
+        .food {
+           grid-area: food; 
+        }
+        .ingredients {
+           grid-area: ingredients;
+           .ingredient {
+             font-weight: 700;
+           }
+           ul {
+             padding-left: 20px;
+           }
+        }
     }
-    .text {
-      display: flex;
-       flex-direction: column;
-       justify-content: center;
-       flex-wrap: wrap;
-       h5 {
-         margin-bottom: 7px;
-       }
+    .error-message {
+      text-align: center;
     }
-    .nametag {
-       grid-area: nametag; 
-       display: flex;
-       flex-direction: column;
-       justify-content: center;
-       flex-wrap: wrap;
-    }
-    .image { 
-      grid-area: image; 
-      img {
-        max-height: 400px;
-      }
-    }
-    .desc {
-       grid-area: desc; 
-       p {
-         margin-bottom: 15px;
-         &.notes {
-          font-style: italic;
-         }
-       }
-    }
-    .food {
-       grid-area: food; 
-    }
-    .ingredients {
-       grid-area: ingredients;
-       .ingredient {
-         font-weight: 700;
-       }
-       ul {
-         padding-left: 20px;
-       }
-    }
-
     button {
       padding: 15px 30px;
       background: #000;

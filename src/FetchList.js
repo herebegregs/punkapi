@@ -8,8 +8,8 @@ class FetchList extends React.Component {
     }
     render(){
         console.log("items: ", this.props.listItems)
-        if(this.props.error) {
-            return <li>Error: { this.props.error.message }</li>;
+        if(this.props.hasError) {
+            return <h1 className="error-message">Error: { this.props.hasError } :(</h1>;
         } else if (!this.props.isLoaded) {
             return <li>Loading</li>;
         } else {

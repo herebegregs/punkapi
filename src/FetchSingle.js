@@ -14,10 +14,9 @@ class FetchSingle extends React.Component {
     }
 
     render(){
-        console.log("single name: ", this.props.name);
         console.log("single items ", this.props.items)
-        if(this.props.error) {
-            return <p>Error: { this.props.error.message }</p>;
+        if(this.props.hasError) {
+            return <h1 className="error-message">Error: { this.props.hasError } :(</h1>;
         } else if (!this.props.isLoaded) {
             return <p>Loading</p>;
         } else {
