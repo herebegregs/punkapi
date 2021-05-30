@@ -2,12 +2,191 @@
   .header {
     text-align: center;
     padding: 20px 0;
-    border-bottom: 1px solid black;
+    border-bottom: 2px solid black;
+    h1 {
+      font-weight: 900;
+    }
   }
   .wrapper {
     margin: 4rem auto;
-    width: 800px;
-    border: 1px solid black;
+    width: 900px;
+    position: relative;
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .beer-list {
+      margin: 40px 0;
+      display: flex;
+      flex-wrap: wrap;
+      background: #fff;
+      .beer {
+        display: flex;
+        align-items: center;
+        flex-basis: 49%;
+        flex-grow: 1;
+        transition: all 0.1s ease-in-out;
+        position: relative;
+        background: #fff;
+        margin-top: 10px;
+        cursor: pointer;
+        article {
+          flex-basis: 70%;
+          text-align: center;
+          padding: 10px;
+          h5 {
+            position: relative;
+            &:after {
+              content: '';
+              display: block;
+              position: absolute;
+              bottom: -2px;
+              background: #000;
+              height: 2px;
+              right: 50%;
+              width: 0;
+              transition: all 0.1s ease-in-out;
+            }
+          }
+        }
+        figure {
+          flex-basis: 30%;
+          display: flex;
+          justify-content: center;
+          img {
+            max-height: 100px;
+          }
+        }
+        &:hover {
+          transform: translate(5px, -5px);
+          box-shadow: 5px 5px 10px #ccc;
+          article {
+            h5{
+              &:after {
+                right: 0;
+                width: 100%;
+              }
+            }
+          }
+        }
+        &:nth-of-type(odd){
+          margin-right: 7px;
+        }
+        &:nth-of-type(even){
+          margin-left: 7px;
+        }
+      }
+    }
+
+    .single-beer {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      grid-template-rows: auto minmax(200px, auto);
+      gap: 5px 5px;
+      grid-template-areas:
+        "nametag image"
+        "desc image"
+        "food ingredients";
+    }
+    .text {
+      display: flex;
+       flex-direction: column;
+       justify-content: center;
+       flex-wrap: wrap;
+       h5 {
+         margin-bottom: 7px;
+       }
+    }
+    .nametag {
+       grid-area: nametag; 
+       display: flex;
+       flex-direction: column;
+       justify-content: center;
+       flex-wrap: wrap;
+    }
+    .image { 
+      grid-area: image; 
+      img {
+        max-height: 400px;
+      }
+    }
+    .desc {
+       grid-area: desc; 
+       p {
+         margin-bottom: 15px;
+         &.notes {
+          font-style: italic;
+         }
+       }
+    }
+    .food {
+       grid-area: food; 
+    }
+    .ingredients {
+       grid-area: ingredients;
+       .ingredient {
+         font-weight: 700;
+       }
+       ul {
+         padding-left: 20px;
+       }
+    }
+
+    button {
+      padding: 15px 30px;
+      background: #000;
+      color: #fff;
+      font-weight: 900;
+      border: none;
+      border-radius: none;
+      cursor: pointer;
+      &:not(last-of-type) {
+        margin-right: 2px;
+      }
+    }
+  }
+  @media (max-width: 991px) {
+    .wrapper {
+      width: 100vw;
+      .beer-list {
+        .beer {
+          flex-basis: 100%;
+        }
+      }
+      .nav {
+        flex-direction: column;
+        width: 50%;
+        margin: 0 auto;
+        button {
+          width: 100%;
+          margin-bottom: 10px;
+        }
+        .pagination-cluster {
+          width: 100%;
+          display: flex;;
+          button {
+            flex: 1;
+          }
+        }
+      }
+      .single-beer {
+        padding: 0 15px;
+        margin-bottom: 40px;
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: auto minmax(auto, 200px);
+        gap: 5px 5px;
+        grid-template-areas:
+        "nametag image"
+        "desc desc"
+        "food food"
+        "ingredients ingredients";
+        .image {
+          img {
+            max-height: 200px;
+          }
+        }
+      }
+    }
   }
 }
-

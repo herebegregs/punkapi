@@ -17,49 +17,62 @@ class FetchSingle extends React.Component {
         console.log("single name: ", this.props.name);
         console.log("single items ", this.props.items)
         if(this.props.error) {
-            return <li>Error: { this.props.error.message }</li>;
+            return <p>Error: { this.props.error.message }</p>;
         } else if (!this.props.isLoaded) {
-            return <li>Loading</li>;
+            return <p>Loading</p>;
         } else {
             return ( 
                 <div>
                     {this.props.listItems.map((item) =>(
-                        <div key={item.id} className="beer">
-                            <p >
-                                {item.name}
-                            </p>
-                            <p>
-                                {item.tagline}
-                            </p>
-                            <figure>
+                        <div key={item.id} className="single-beer">
+                            <aside className="nametag text">
+                                <h3>
+                                    {item.name}
+                                </h3>
+                                <h5>
+                                    {item.tagline}
+                                </h5>
+                            </aside>
+                            <figure className="image">
                                 <img src={item.image_url} alt={item.name}/>
                             </figure>
-                            <p>
-                                {item.description}
-                            </p>
-                            <p>
-                                {item.brewers_tips}
-                            </p>
-                            <p>Ingredients</p>
-                            <p>Malt:</p>
-                            <ul>
-                            {item.ingredients.malt.map((malt, index) =>
-                                <li key={index}>{malt.name} - {malt.amount.value} {malt.amount.unit}</li>
-                                )}
-                            </ul>
-                            <p>Hops:</p>
-                            <ul>
-                            {item.ingredients.hops.map((hops, index) =>
-                                    <li key={index}>{hops.name} - {hops.amount.value} {hops.amount.unit}</li>
+                            <article className="desc text">
+                                <h5>Description:</h5>
+                                <p>
+                                    {item.description}
+                                </p>
+                                <h5>Brewer's notes:</h5>
+                                <p className="notes text">
+                                    "{item.brewers_tips}"
+                                </p>
+                            </article>
+                            <aside className="ingredients text">
+                                <h5>Ingredients</h5>
+                                <p className="ingredient">Malt:</p>
+                                <ul>
+                                {item.ingredients.malt.map((malt, index) =>
+                                    <li key={index}>{malt.name} - {malt.amount.value} {malt.amount.unit}</li>
                                     )}
-                                    </ul>
-                            <p>Yeast: {item.ingredients.yeast}</p>
-                            <p>Food pairing</p>
-                            <ul>
-                            {item.food_pairing.map((food, index) =>
-                                    <li key={index}>{food}</li>
-                                    )}
-                                    </ul>
+                                </ul>
+                                <p className="ingredient">Hops:</p>
+                                <ul>
+                                {item.ingredients.hops.map((hops, index) =>
+                                        <li key={index}>{hops.name} - {hops.amount.value} {hops.amount.unit}</li>
+                                        )}
+                                        </ul>
+                                <p className="ingredient">Yeast:</p>
+                                <ul>
+                                    <li>{item.ingredients.yeast}</li>
+                                </ul>
+                            </aside>
+                            <article className="food">
+                                <h5>Pairs well with:</h5>
+                                <ul>
+                                    {item.food_pairing.map((food, index) =>
+                                        <li key={index}>{food}</li>
+                                        )}
+                                </ul>
+                            </article>
                         </div>
                     ))}
                 </div>

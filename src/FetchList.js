@@ -14,10 +14,16 @@ class FetchList extends React.Component {
             return <li>Loading</li>;
         } else {
             return ( 
-                <ul>
+                <ul className="beer-list">
                 {this.props.listItems.map((item) =>(
-                    <li key={item.id} onClick={() => this.props.recordRowId(true, item.id)}>
-                        ID: {item.id} {item.name} {item.tagline} - 
+                    <li className="beer" key={item.id} onClick={() => this.props.recordRowId(true, item.id)}>
+                        <article>
+                            <h5>{item.name}</h5>
+                            <p>{item.tagline}</p>
+                        </article>
+                        <figure >
+                            <img src={item.image_url} alt={item.name} />
+                        </figure>
                     </li>
                     ))}
                 </ul>

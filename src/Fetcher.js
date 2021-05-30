@@ -14,7 +14,7 @@ class Fetcher extends React.Component {
             page: 1,
             isPaginated: true,
             isLoaded: false,
-            fetchUrl: "https://api.punkapi.com/v2/beers"
+            fetchUrl: "https://api.punkapi.com/v2/beers?per_page=20"
         }
     }
     
@@ -45,7 +45,7 @@ class Fetcher extends React.Component {
         const baseUrl = "https://api.punkapi.com/v2/beers";
         if(!isSingle){
             this.setState({
-                fetchUrl: (baseUrl+"?page="+this.state.page),
+                fetchUrl: (baseUrl+"?per_page=20&page="+this.state.page),
                 isListView: true,
                 isPaginated: true,
                 listItems: []
