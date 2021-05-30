@@ -1,51 +1,36 @@
 import React from 'react';
+import FetchList from './FetchList.js';
+import FetchSingle from './FetchSingle.js';
 
 class Fetcher extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-          error: null,
-          isLoaded: false,
-          items: []
-        };
-      }
+            fetchView: "list",
+            id: null,
+            random: false
+        }
+    }
     
-      componentDidMount(){
-        fetch('https://api.punkapi.com/v2/beers')
-        .then(response => response.json())
-        .then(
-            (data) => {
-                console.log(data);
-                this.setState({
-                    isLoaded: true,
-                    items: data
-                });
-            },
-            (error) => {
-                this.setState({
-                    isLoaded: true,
-                    error
-                });
-            }
-        )
+    fetchSingle = (id) => {
+        console.log("name ", id)
+        this.setState({fetchView:"single"});
+        this.setState({id: id})
     }
     render(){
-        console.log(this.state.items)
-        const { error, isLoaded, items } = this.state;
-        if(error) {
-            return <li>Error: { error.message }</li>;
-        } else if (!isLoaded) {
-            return <li>Loading</li>;
-        } else {
-            return ( 
-                <ul>
-                {items.map((item) =>(
-                    <li key={item.id}>
-                    {item.name} {item.tagline}
-                    </li>
-                    ))}
-                </ul>
-            );
+        const { fetchView } = this.state;
+        if(fetchView === "list"){
+            return (
+                <FetchList 
+                    fetchSingle={this.fetchSingle}
+                />
+            )
+        } else if(fetchView === "single") {
+            return (
+                <FetchSingle 
+                    name={this.state.id}
+                />
+            )
         }
     }
 }
