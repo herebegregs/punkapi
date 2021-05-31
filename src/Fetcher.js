@@ -19,10 +19,10 @@ class Fetcher extends React.Component {
         }
     }
     
+    baseUrl = "https://api.punkapi.com/v2/beers";
 
-    beerFetch = () => {
-        console.log("beer fetching: ", this.state.fetchUrl);
-        fetch(this.state.fetchUrl)
+    beerFetch = (url) => {
+        fetch(url)
         .then(response => {
             if (response.ok) {
               return response.json()
@@ -32,7 +32,6 @@ class Fetcher extends React.Component {
           })
         .then(
             (data) => {
-                console.log("data: ", data);
                 this.setState({
                     isLoaded: true,
                     listItems: data
@@ -40,7 +39,6 @@ class Fetcher extends React.Component {
             },
         )
         .catch(error => {
-            console.log('error is', error);
             this.setState({
                 isLoaded: true,
                 error: error
@@ -50,29 +48,31 @@ class Fetcher extends React.Component {
     }
 
     generateFetch = (isSingle, id, page) => {
-        const baseUrl = "https://api.punkapi.com/v2/beers";
         if(!isSingle){
             this.setState({
-                fetchUrl: (baseUrl+"?per_page=20&page="+page),
+                fetchUrl: (this.baseUrl+"?per_page=20&page="+page),
                 isListView: true,
                 isPaginated: true,
                 currentPage: page,
                 listItems: [],
+                isLoaded: false
             });
         } else {
             if(id) {
                 this.setState({
-                    fetchUrl: (baseUrl+"?ids="+id),
+                    fetchUrl: (this.baseUrl+"?ids="+id),
                     isListView: false,
                     isPaginated: false,
                     id: id,
-                    listItems: []
+                    listItems: [],
+                    isLoaded: false
                 });
             } else {
-                this.setState({fetchUrl: (baseUrl+"/random"),
+                this.setState({fetchUrl: (this.baseUrl+"/random"),
                 isListView: false,
                 isPaginated: false,
-                listItems: []
+                listItems: [],
+                isLoaded: false
             });
             }
         }
@@ -80,35 +80,36 @@ class Fetcher extends React.Component {
 
     render(){        
         const { isListView } = this.state;
-        console.log("currentpage: ", this.state.currentPage);
         return (
             <div className="wrapper">
             { isListView ?
                 (
                     <FetchList 
-                    recordRowId={this.generateFetch}
-                    listFetcher={() => this.beerFetch()}
-                    hasError={this.state.error}
-                    listItems={this.state.listItems}
-                    isLoaded={this.state.isLoaded}
+                        recordRowId={this.generateFetch}
+                        listFetcher={() => this.beerFetch(this.state.fetchUrl)}
+                        hasError={this.state.error}
+                        listItems={this.state.listItems}
+                        isLoaded={this.state.isLoaded}
                     />
                 ) : (
                     <FetchSingle 
-                    id={this.state.id}
-                    hasError={this.state.error}
-                    listItems={this.state.listItems}
-                    isLoaded={this.state.isLoaded}
-                    isRandom={this.state.isRandom}
-                    fetchSingle={() => this.beerFetch()}
+                        id={this.state.id}
+                        hasError={this.state.error}
+                        listItems={this.state.listItems}
+                        isLoaded={this.state.isLoaded}
+                        isRandom={this.state.isRandom}
+                        fetchSingle={() => this.beerFetch(this.state.fetchUrl)}
                     />
                 )
             }
             <Navigation
-            isListView={this.state.isListView}
-            isPaginated={this.state.isPaginated}
-            currentPage={this.state.currentPage}
-            listFetcher={() => this.beerFetch()}
-            loadPage={this.generateFetch}
+                isListView={this.state.isListView}
+                isPaginated={this.state.isPaginated}
+                currentPage={this.state.currentPage}
+                listFetcher={() => this.beerFetch(this.state.fetchUrl)}
+                loadPage={this.generateFetch}
+                baseUrl={this.baseUrl}
+                beerFetch={this.beerFetch}
             />
             </div>
         )

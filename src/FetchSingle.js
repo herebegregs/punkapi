@@ -5,16 +5,12 @@ class FetchSingle extends React.Component {
     componentDidMount(){
         if(!this.props.isRandom){
             this.props.fetchSingle();
-            console.log("not random");
         } else {
             this.props.fetchRandom();
-            console.log("random");
         }
-        console.log("single props: ", this.props)
     }
 
     render(){
-        console.log("single items ", this.props.items)
         if(this.props.hasError) {
             return <h1 className="error-message">Error: { this.props.hasError } :(</h1>;
         } else if (!this.props.isLoaded) {

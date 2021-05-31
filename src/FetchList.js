@@ -4,10 +4,8 @@ class FetchList extends React.Component {
 
     componentDidMount(){
         this.props.listFetcher();
-        console.log("listFetcher", this.props);
     }
     render(){
-        console.log("items: ", this.props.listItems)
         if(this.props.hasError) {
             return <h1 className="error-message">Error: { this.props.hasError } :(</h1>;
         } else if (!this.props.isLoaded) {

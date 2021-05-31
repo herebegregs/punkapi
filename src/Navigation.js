@@ -1,8 +1,11 @@
 import React from 'react';
 
 class Navigation extends React.Component{
+    BF = (page) => {
+        this.props.loadPage(false , null, page);
+        this.props.beerFetch(this.props.baseUrl+"?per_page=20&page="+page);
+    }
     render () {
-        console.log("currentpage ", this.props.currentPage);
         return (
             <div className="nav">
                 { this.props.isListView ? 
@@ -18,11 +21,11 @@ class Navigation extends React.Component{
                 {this.props.isPaginated &&
                     <div className="pagination-cluster">
                         {this.props.currentPage > 1 && 
-                            <button onClick={() => this.props.loadPage(false , null, (this.props.currentPage - 1))}>
+                            <button onClick={() => this.BF(this.props.currentPage - 1)}>
                                 Prev
                             </button>
                         } 
-                        <button onClick={() => this.props.loadPage(false , null, (this.props.currentPage + 1))}>
+                        <button onClick={() => this.BF(this.props.currentPage + 1)}>
                             Next
                         </button>
                     </div>
