@@ -10,7 +10,7 @@ class Fetcher extends React.Component {
             isListView: true,
             id: null,
             isRandom: false,
-            listItems: [],
+            data: [],
             currentPage: 1,
             isPaginated: true,
             isLoaded: false,
@@ -21,7 +21,7 @@ class Fetcher extends React.Component {
     
     baseUrl = "https://api.punkapi.com/v2/beers";
 
-    beerFetch = (url) => {
+    fetchData = (url) => {
         fetch(url)
         .then(response => {
             if (response.ok) {
@@ -34,7 +34,7 @@ class Fetcher extends React.Component {
             (data) => {
                 this.setState({
                     isLoaded: true,
-                    listItems: data
+                    data: data
                 });
             },
         )
@@ -47,14 +47,14 @@ class Fetcher extends React.Component {
         );
     }
 
-    generateFetch = (isSingle, id, page) => {
+    setPageParams = (isSingle, id, page) => {
         if(!isSingle){
             this.setState({
                 fetchUrl: (this.baseUrl+"?per_page=20&page="+page),
                 isListView: true,
                 isPaginated: true,
                 currentPage: page,
-                listItems: [],
+                data: [],
                 isLoaded: false
             });
         } else {
@@ -64,14 +64,14 @@ class Fetcher extends React.Component {
                     isListView: false,
                     isPaginated: false,
                     id: id,
-                    listItems: [],
+                    data: [],
                     isLoaded: false
                 });
             } else {
                 this.setState({fetchUrl: (this.baseUrl+"/random"),
                 isListView: false,
                 isPaginated: false,
-                listItems: [],
+                data: [],
                 isLoaded: false
             });
             }
@@ -79,37 +79,47 @@ class Fetcher extends React.Component {
     }
 
     render(){        
-        const { isListView } = this.state;
+        const {
+            isListView,
+            error,
+            data,
+            isLoaded,
+            isRandom,
+            isPaginated,
+            currentPage,
+            fetchUrl,
+            id
+        } = this.state;
         return (
             <div className="wrapper">
             { isListView ?
                 (
                     <FetchList 
-                        recordRowId={this.generateFetch}
-                        listFetcher={() => this.beerFetch(this.state.fetchUrl)}
-                        hasError={this.state.error}
-                        listItems={this.state.listItems}
-                        isLoaded={this.state.isLoaded}
+                        setPageParams={this.setPageParams}
+                        listFetcher={() => this.fetchData(fetchUrl)}
+                        hasError={error}
+                        data={data}
+                        isLoaded={isLoaded}
                     />
                 ) : (
                     <FetchSingle 
-                        id={this.state.id}
-                        hasError={this.state.error}
-                        listItems={this.state.listItems}
-                        isLoaded={this.state.isLoaded}
-                        isRandom={this.state.isRandom}
-                        fetchSingle={() => this.beerFetch(this.state.fetchUrl)}
+                        id={id}
+                        hasError={error}
+                        data={data}
+                        isLoaded={isLoaded}
+                        isRandom={isRandom}
+                        fetchSingle={() => this.fetchData(fetchUrl)}
                     />
                 )
             }
             <Navigation
-                isListView={this.state.isListView}
-                isPaginated={this.state.isPaginated}
-                currentPage={this.state.currentPage}
-                listFetcher={() => this.beerFetch(this.state.fetchUrl)}
-                loadPage={this.generateFetch}
+                isListView={isListView}
+                isPaginated={isPaginated}
+                currentPage={currentPage}
+                listFetcher={() => this.fetchData(fetchUrl)}
+                setPageParams={this.setPageParams}
                 baseUrl={this.baseUrl}
-                beerFetch={this.beerFetch}
+                fetchData={this.fetchData}
             />
             </div>
         )

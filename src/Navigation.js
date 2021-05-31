@@ -1,37 +1,42 @@
 import React from 'react';
 
-class Navigation extends React.Component{
-    BF = (page) => {
-        this.props.loadPage(false , null, page);
-        this.props.beerFetch(this.props.baseUrl+"?per_page=20&page="+page);
-    }
-    render () {
-        return (
-            <div className="nav">
-                { this.props.isListView ? 
-                    (<button onClick={() => this.props.loadPage(true , null)}>
+const Navigation = ({
+    setPageParams, 
+    fetchData, 
+    currentPage,
+    baseUrl,
+    isPaginated,
+    isListView
+}) => {    
+    const loadPage = (page) => {
+        setPageParams(false , null, page);
+        fetchData(baseUrl+"?per_page=20&page="+page);
+    };
+    return (
+        <div className="nav">
+                { isListView ? 
+                    (<button onClick={() => setPageParams(true , null)}>
                         Random
                     </button>
                     ) : ( 
-                    <button onClick={() => this.props.loadPage(false , null, this.props.currentPage)}>
+                    <button onClick={() => setPageParams(false , null, currentPage)}>
                         List All
                     </button>
                     )
                 }
-                {this.props.isPaginated &&
+                {isPaginated &&
                     <div className="pagination-cluster">
-                        {this.props.currentPage > 1 && 
-                            <button onClick={() => this.BF(this.props.currentPage - 1)}>
+                        {currentPage > 1 && 
+                            <button onClick={() => loadPage(currentPage - 1)}>
                                 Prev
                             </button>
                         } 
-                        <button onClick={() => this.BF(this.props.currentPage + 1)}>
+                        <button onClick={() => loadPage(currentPage + 1)}>
                             Next
                         </button>
                     </div>
                 }
             </div>
-        );
-    }
-}
+    );
+};
 export default Navigation;

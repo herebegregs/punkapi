@@ -6,15 +6,16 @@ class FetchList extends React.Component {
         this.props.listFetcher();
     }
     render(){
-        if(this.props.hasError) {
-            return <h1 className="error-message">Error: { this.props.hasError } :(</h1>;
-        } else if (!this.props.isLoaded) {
-            return <li>Loading</li>;
+        const {hasError, isLoaded, data, setPageParams} = this.props
+        if(hasError) {
+            return <h1 className="message">Error: { hasError } :(</h1>;
+        } else if (!isLoaded) {
+            return <h1 className="message">Loading</h1>;
         } else {
             return ( 
                 <ul className="beer-list">
-                {this.props.listItems.map((item) =>(
-                    <li className="beer" key={item.id} onClick={() => this.props.recordRowId(true, item.id)}>
+                {data.map((item) =>(
+                    <li className="beer" key={item.id} onClick={() => setPageParams(true, item.id)}>
                         <article>
                             <h5>{item.name}</h5>
                             <p>{item.tagline}</p>

@@ -11,14 +11,15 @@ class FetchSingle extends React.Component {
     }
 
     render(){
-        if(this.props.hasError) {
-            return <h1 className="error-message">Error: { this.props.hasError } :(</h1>;
-        } else if (!this.props.isLoaded) {
-            return <p>Loading</p>;
+        const { hasError, isLoaded, data } = this.props;
+        if(hasError) {
+            return <h1 className="message">Error: { hasError } :(</h1>;
+        } else if (!isLoaded) {
+            return <h1 className="message">Loading</h1>;
         } else {
             return ( 
                 <div>
-                    {this.props.listItems.map((item) =>(
+                    {data.map((item) =>(
                         <div key={item.id} className="single-beer">
                             <aside className="nametag text">
                                 <h3>
